@@ -1,0 +1,106 @@
+\begin{frame}{Family of free GNU Multiple Precision Libraries}
+
+\begin{itemize}\itemsep0.5em
+
+\item
+\textbf{GMP - GNU Mult. Prec. Arithmetic Library}\footnote{\tiny
+\url{https://gmplib.org/}}
+(C/C++, version 6.2.1; since 1991)
+\begin{itemize}
+\item
+supports: signed integers, rational numbers, and floating-point numbers
+
+\item
+arithmetic and logic functions for supported data types
+
+\item
+focus: \textbf{speed, cryptography}
+\end{itemize}
+
+\item
+\textbf{MPFR - GNU Mult. Prec. Fl.-Point Reliable Library}\footnote{\tiny
+\url{https://www.mpfr.org/}}
+(C, version 4.1.0; since 2000)
+\begin{itemize}
+\item
+supports: floating-point numbers (arithmetic and logic functions)
+
+\item
+focus: \textbf{correct rounding}, precise semantics (IEEE 754)
+\end{itemize}
+
+\item
+\textbf{MPC - GNU Mult. Prec. Complex Library}\footnote{\tiny
+\url{http://www.multiprecision.org/}}
+(C, version 1.2.1; since 2003)
+\begin{itemize}
+\item
+addition: \textbf{complex} floating-point numbers
+\end{itemize}
+
+
+
+\end{itemize}
+
+\end{frame}
+
+
+
+\begin{frame}{Comparable Matlab/Octave toolboxes}
+
+\begin{itemize}\itemsep0.5em
+
+\item
+\textbf{Matlab VPA (Variable-precision arithmetic,
+Symbolic toolbox)}\footnote{\tiny
+\url{https://www.mathworks.com/help/symbolic/vpa.html}}
+\begin{itemize}
+\item
+Slow for dimensions $> 100$.
+\end{itemize}
+
+% Pavel Holoborodko (Yokohama, Japan)
+\item
+\textbf{Advanpix}\footnote{\tiny
+\url{https://www.advanpix.com/}}
+(version 4.8.5.14569; since 2010)
+{\color{red} Very fast and complete!}
+\begin{itemize}
+\item
+{\color{blue} closed source} (P-code), proprietary license
+
+\item
+Matlab only
+\end{itemize}
+
+% Jean-Daniel Bancal (Switzerland)
+\item
+\textbf{GEM - Gmp Eigen Matrix Library}\footnote{\tiny
+\url{https://gem-library.github.io/}}
+(version 2.0.2; since 2016)
+\begin{itemize}
+\item
+free, open source (MPL-2.0, others)
+
+\item
+Matlab and Octave
+\end{itemize}
+
+% Ben Barrowes (USA)
+\item
+\textbf{mptoolbox}\footnote{\tiny
+\url{https://sourceforge.net/projects/mptoolbox/}}
+\footnote{\tiny
+\url{https://www.mathworks.com/matlabcentral/fileexchange/6446-multiple-precision-toolbox-for-matlab}}
+(version 1.5; since 2004)
+\begin{itemize}
+\item
+free, open source (BSD-3-Clause)
+
+\item
+Matlab and "Octave" (needs some adaptions)
+\end{itemize}
+
+\end{itemize}
+
+\end{frame}

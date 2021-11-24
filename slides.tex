@@ -1,0 +1,111 @@
+\documentclass[xcolor=svgnames,aspectratio=169]{beamer}
+\usetheme{Boadilla}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{sourcecodepro}
+\usepackage[whole]{bxcjkjatype}
+
+\usepackage[backend=biber,style=numeric-comp,sorting=none]{biblatex}
+\addbibresource{slides.bib}
+\setbeamertemplate{bibliography item}{\insertbiblabel}
+
+\usepackage{listings}
+\lstset{
+  language=Octave,
+  keywordstyle=\color{blue},
+  showstringspaces=false,
+  stringstyle=\color{magenta},
+  commentstyle=\color{DarkGreen},
+  columns=fullflexible,
+  upquote=true,
+}
+\usepackage{textcomp}
+
+\usepackage{mathtools}
+\usepackage{multimedia}
+\usepackage{siunitx}
+\usepackage{pifont}
+\usepackage{tikz}
+\newcommand*\colorcheck[1]{%
+  \expandafter\newcommand\csname #1check\endcsname{\textcolor{#1}{\ding{52}}}%
+}
+\colorcheck{green}
+\usepackage{microtype}
+\DisableLigatures{encoding = OT1}
+\def\UrlFont{\fontencoding{OT1}\selectfont}
+
+\title[APA - Arbitrary Precision Arithmetic toolbox]{APA - An Arbitrary Precision Arithmetic toolbox}
+\subtitle{for Octave and Matlab}
+\author[Kai T. Ohlhus]{
+  オールフス　カイトーベン \\
+  OHLHUS, Kai Torben}
+\institute[TWCU]{
+  Graduate School of Science \\
+  Tokyo Woman's Christian University}
+\date[November 27, 2021]{
+"Development of Verified Numerical Computations for Mathematical Modeling" \\
+JST/CREST Result Briefing
+{\footnotesize\url{http://verifiedby.me/nvr2021/}} \\
+(online) \\[1em]
+November 27, 2021}
+\titlegraphic{
+\hfill\includegraphics[height=1em]{res/images/cc-by-sa}
+}
+
+\begin{document}
+
+{
+\usebackgroundtemplate{
+  \vbox to \paperheight{\vfil\hbox to \paperwidth{\hfil
+  \tikz\node[opacity=0.15] {
+  %\includegraphics[width=0.6\paperwidth]{res/images/logo}
+  };
+  \hfil}\vfil}
+}
+\frame{\titlepage}
+}
+
+
+\section{Why yet another toolbox?}
+\frame{\tableofcontents}
+\input{tex/slides_other_tools}
+
+\section{APA toolbox}
+\frame{\tableofcontents[currentsection]}
+\input{tex/slides_apa}
+
+
+
+\section{Benchmark}
+\frame{\tableofcontents[currentsection]}
+\input{tex/slides_benchmark}
+
+
+
+\section{Summary}
+\frame{\tableofcontents[currentsection]}
+\input{tex/slides_summary}
+
+
+% Backup slides.
+\newcounter{finalframe}
+\setcounter{finalframe}{\value{framenumber}}
+
+
+
+\section*{References}
+
+
+
+\begin{frame}[allowframebreaks,noframenumbering]
+\frametitle{References}
+\printbibliography
+\end{frame}
+
+
+
+\setcounter{framenumber}{\value{finalframe}}
+
+\end{document}

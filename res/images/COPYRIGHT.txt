@@ -1,0 +1,6 @@
+This file contains copyright notices and sources of the given resources:
+
+- `cc-by-sa.png`
+  URL: https://licensebuttons.net/l/by-sa/4.0/88x31.png (2021-11-24)
+  Copyright: creativecommons
+
