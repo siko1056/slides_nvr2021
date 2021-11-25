@@ -1,22 +1,20 @@
-\begin{frame}{What makes APA different?}
-\framesubtitle{A real wrapper around the plain C functions.}
-
-
-\end{frame}
-
-
 \begin{frame}[fragile]{What makes APA different?}
-\framesubtitle{Almost drop-in compatible with C Code\footnote{Example
-from https://www.mpfr.org/sample.html (2021-11-19).}.}
+\framesubtitle{-- Work with C Code\footnote{Example
+from https://www.mpfr.org/sample.html (2021-11-19).}
+interactively in Octave/Matlab.}
 
 \begin{columns}
+\begin{column}[T]{0.01\textwidth}
+\end{column}
 \begin{column}[T]{0.3\textwidth}
 \includegraphics[width=\linewidth]{res/images/mpfr_example}
 \end{column}
-\begin{column}[T]{0.5\textwidth}
-APA {\color{blue}Low-Level} interface (control, "speed"): \\[1em]
-
-\begin{lstlisting}[basicstyle=\tiny]
+\begin{column}[T]{0.01\textwidth}
+\end{column}
+\begin{column}[T]{0.38\textwidth}
+\begin{lstlisting}[basicstyle=\tiny,
+  columns=fullflexible,
+  upquote=true,]
 t = mpfr_t (1.0, 200, MPFR_RNDD);
 s = mpfr_t (1.0, 200, MPFR_RNDD);
 u = mpfr_t (nan, 200);
@@ -31,25 +29,25 @@ end
 fprintf ('Sum is ');
 disp (s, MPFR_RNDD);
 \end{lstlisting}
+
+\bigskip
+
+APA {\color{blue}Low-Level} interface:
+\begin{itemize}
+\item
+Easy testing and debugging.
+
+\item
+Interpreter overhead.
+\end{itemize}
+
 \end{column}
-\end{columns}
+\begin{column}[T]{0.4\textwidth}
 
-\end{frame}
-
-
-\begin{frame}[fragile]{What makes APA different?}
-\framesubtitle{Almost drop-in compatible with C Code\footnote{Example
-from https://www.mpfr.org/sample.html (2021-11-19).}.}
-
-\begin{columns}
-\begin{column}[T]{0.3\textwidth}
-\includegraphics[width=\linewidth]{res/images/mpfr_example}
-\end{column}
-\begin{column}[T]{0.5\textwidth}
-APA {\color{blue}High-Level} interface (convenience): \\[1em]
-
-\begin{lstlisting}[basicstyle=\tiny]
-% Setup default values
+\vspace*{-1cm}
+\begin{lstlisting}[basicstyle=\tiny,
+  columns=fullflexible,
+  upquote=true,]
 setround = @(rnd) ...
 mpfr_set_default_rounding_mode (rnd);
 mpfr_set_default_prec (200);
@@ -68,7 +66,68 @@ end
 fprintf ('Sum is ');
 disp (s);
 \end{lstlisting}
+
+\bigskip
+
+APA {\color{blue}High-Level} interface:
+\begin{itemize}
+\item
+Mathematical language.
+
+\item
+More interpreter overhead.
+\end{itemize}
+
 \end{column}
 \end{columns}
+
+\end{frame}
+
+
+\begin{frame}[fragile]{What makes APA different?}
+\framesubtitle{-- Work with C Code interactively in Octave/Matlab.}
+
+
+\begin{block}{mpfr\_add.m}
+\begin{lstlisting}[basicstyle=\tiny,escapeinside={@}{@},]
+function ret = mpfr_add   (      rop,     op1,     op2,     rnd)
+  ret = mex_apa_interface (@{\tt\color{orange}1031}@, @\tikzmarknode{ropm}{rop.idx}@, op1.idx, op2.idx, rnd);
+end
+\end{lstlisting}
+\end{block}
+
+\begin{block}{mex\_apa\_interface.mex}
+
+{\tiny\hfill
+\lstinline|mpfr_data = |
+\begin{tabular}{|c|c|c|c|c}
+\hline
+\tikzmarknode{rop}{mpfr\_t}
+& mpfr\_t
+& mpfr\_t
+& mpfr\_t
+& \ldots \\
+\hline
+\end{tabular}
+\hfill}
+
+\begin{lstlisting}[language=C,basicstyle=\tiny,
+emph={pragma,omp,parallel,mpfr_add},emphstyle={\color{red}},
+emph={[2]cmd_code,1031},emphstyle={[2]\color{orange}},
+escapeinside={@}{@},]
+void mexFunction ( /* ... */ ) {
+  switch (cmd_code) {
+    case @{\tt\color{orange}1031}@:
+      #pragma omp parallel for
+      for (size_t i = 0; i < length (&rop); i++)
+        ret[i] = mpfr_add (rop + i, op1 + i, op2 + i, rnd);
+  }
+}
+\end{lstlisting}
+\end{block}
+
+\begin{tikzpicture}[overlay,remember picture]
+\draw[-latex] (ropm.south) to (rop.north);
+\end{tikzpicture}
 
 \end{frame}
