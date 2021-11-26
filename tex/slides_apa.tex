@@ -1,3 +1,81 @@
+\begin{frame}[fragile]{APA - Familiar syntax/semantic to other Octave/Matlab toolboxes}
+
+\begin{columns}
+\begin{column}{0.45\linewidth}
+\begin{block}{MPFR Matrix datatype and operations}
+\begin{lstlisting}[basicstyle=\scriptsize,
+xleftmargin=0.2cm,]
+>> A = mpfr_t (eye (3)) + 2
+A =
+   3   2   2
+   2   3   2
+   2   2   3
+\end{lstlisting}
+\end{block}
+\end{column}
+\begin{column}{0.4\linewidth}
+\begin{block}{Output customization}
+\begin{lstlisting}[basicstyle=\tiny,
+xleftmargin=0.2cm,]
+>> apa ('format.base', 16)
+>> a = 1 - mpfr_t (eps)
+a = 0.fffffffffffff
+
+>> apa ('format.base', 2)
+>> apa ('format.fmt', 'scientific')
+>> e = mpfr_t (eps)
+e = 1 * 2^(-52)
+\end{lstlisting}
+\end{block}
+\end{column}
+\end{columns}
+
+\begin{block}{Precision as binary digits (MPFR compatiblity)}
+\begin{lstlisting}[basicstyle=\scriptsize,
+xleftmargin=0.8cm,]
+>> prec10 = 50;                     % decimal digits
+>> prec2  = ceil(prec10*log2(10));  % binary  digits
+>> PI = mpfr_t ('pi', prec2)
+PI =
+   3.1415 92653 58979 32384 62643 38327 95028 84197 16939 93751 01
+\end{lstlisting}
+\begin{itemize}
+\item
+Estimated necessary binary precision slightly larger,
+50 decimal digits guaranteed correct.
+\end{itemize}
+\end{block}
+
+\end{frame}
+
+
+\begin{frame}[fragile]{What makes APA different?}
+
+\begin{block}{Fast and easy installation with 5 Octave/Matlab commands.}
+\begin{lstlisting}[basicstyle=\scriptsize,
+xleftmargin=0.8cm,
+columns=fullflexible,
+upquote=true,
+escapeinside={@}{@},]
+urlwrite ('@{\color{magenta}https://github.com/gnu-octave/apa/releases/download/v1.0.0/apa-1.0.0.zip}@', '@{\color{magenta}apa-1.0.0.zip}@');
+unzip ('@{\color{magenta}apa-1.0.0.zip}@');
+cd (fullfile ('@{\color{magenta}apa-1.0.0}@', 'inst'))
+install_apa
+test_apa
+\end{lstlisting}
+
+\begin{itemize}
+\item
+Internally used GMP and MPFR libraries provided as pre-compiled static libraries.
+
+\item
+Tested and works with Octave and Matlab on \textbf{MS Windows, macOS, and Linux}.
+\end{itemize}
+\end{block}
+
+\end{frame}
+
+
 \begin{frame}[fragile]{What makes APA different?}
 \framesubtitle{-- Work with C Code\footnote{Example
 from https://www.mpfr.org/sample.html (2021-11-19).}
@@ -38,7 +116,7 @@ APA {\color{blue}Low-Level} interface:
 Easy testing and debugging.
 
 \item
-Interpreter overhead.
+Less interpreter overhead.
 \end{itemize}
 
 \end{column}
@@ -87,29 +165,29 @@ More interpreter overhead.
 \begin{frame}[fragile]{What makes APA different?}
 \framesubtitle{-- Work with C Code interactively in Octave/Matlab.}
 
-
-\begin{block}{mpfr\_add.m}
+\begin{columns}
+\begin{column}{0.6\linewidth}
+\begin{block}{mpfr\_add.m$^{*}$}
 \begin{lstlisting}[basicstyle=\tiny,escapeinside={@}{@},]
-function ret = mpfr_add   (      rop,     op1,     op2,     rnd)
-  ret = mex_apa_interface (@{\tt\color{orange}1031}@, @\tikzmarknode{ropm}{rop.idx}@, op1.idx, op2.idx, rnd);
+function ret = mpfr_add   (      rop,    op1,     op2,    rnd)
+  ret = mex_apa_interface (@{\tt\color{orange}1031}@, @\tikzmarknode{ropm}{\tt rop.idx}@, @\tikzmarknode{op1m}{\tt op1.idx}@, @\tikzmarknode{op2m}{\tt op2.idx}@, rnd);
 end
 \end{lstlisting}
 \end{block}
 
-\begin{block}{mex\_apa\_interface.mex}
-
-{\tiny\hfill
+\begin{block}{mex\_apa\_interface.mex$^{*}$}{\tiny\hfill
 \lstinline|mpfr_data = |
-\begin{tabular}{|c|c|c|c|c}
+\begin{tabular}{c|c|c|c|c|c}
 \hline
-\tikzmarknode{rop}{mpfr\_t}
+\ldots
+& \tikzmarknode{rop}{mpfr\_t}
 & mpfr\_t
-& mpfr\_t
-& mpfr\_t
+& \tikzmarknode{op1}{mpfr\_t}
+& \tikzmarknode{op2}{mpfr\_t}
 & \ldots \\
 \hline
 \end{tabular}
-\hfill}
+}
 
 \begin{lstlisting}[language=C,basicstyle=\tiny,
 emph={pragma,omp,parallel,mpfr_add},emphstyle={\color{red}},
@@ -127,7 +205,93 @@ void mexFunction ( /* ... */ ) {
 \end{block}
 
 \begin{tikzpicture}[overlay,remember picture]
-\draw[-latex] (ropm.south) to (rop.north);
+\draw[-latex,thick,blue] (ropm.south) to (rop.north);
+\draw[-latex,thick,blue] (op1m.south) to (op1.north);
+\draw[-latex,thick,blue] (op2m.south) to (op2.north);
 \end{tikzpicture}
 
+\vspace*{-0.5cm}
+{\footnotesize{*Code simplified for presentation.}}
+\end{column}
+\begin{column}{0.35\linewidth}
+Low-level \textbf{function calls} are fast:
+\begin{itemize}
+\item
+Almost no m-code (less interpreter overhead).
+
+\item
+Vectorized: no loops in m-code necessary.
+
+\item
+Almost no data transfer
+(two array indices for each matrix of \textbf{any size}).
+
+\item
+OpenMP \textbf{parallelization} where possible.
+
+\item
+Access to MPFR return value.
+\end{itemize}
+\end{column}
+\end{columns}
+
+\end{frame}
+
+
+\begin{frame}[fragile]{What makes APA different?}
+\framesubtitle{-- Analysis of accuracy loss in Algorithms\footnote{Experimental
+feature and not contained in APA 1.0.0.}.}
+
+\begin{columns}
+\begin{column}{0.35\linewidth}
+\begin{lstlisting}[basicstyle=\tiny]
+>> A = mpfr_t ([2 1 1; 1 2 1; 1 1 2])
+A =
+
+   2   1   1
+   1   2   1
+   1   1   2
+
+>> [L,U,~,ret] = lu (A)
+
+L =
+
+     1                     0   0
+   0.5                     1   0
+   0.5   0.33333333333333331   1
+
+U =
+
+   2     1                    1
+   0   1.5                  0.5
+   0     0   1.3333333333333333
+
+ret =
+
+   0   0   0
+   0   0   0
+   0  -1   1
+\end{lstlisting}
+\end{column}
+\begin{column}{0.55\linewidth}
+Most MPFR functions provide a ternary return value:
+\begin{itemize}
+\item $0$: returned value is exact.
+\item $\pm 1$: returned value is greater/lower than the exact result.
+
+\bigskip
+
+\item
+Many MPFR-based libraries ignore this value.
+
+\item
+Possibility to detect loss of accuracy in algorithms
+(faster than interval arithmetic).
+
+\item
+Support design decisions about least necessary precision
+for given input.
+\end{itemize}
+\end{column}
+\end{columns}
 \end{frame}

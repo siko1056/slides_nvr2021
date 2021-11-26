@@ -1,7 +1,44 @@
-\begin{frame}{Summary}
+\begin{frame}{Summary and outlook}
+
+APA is an arbitrary precision arithmetic toolbox for Octave/Matlab:
+
+\begin{itemize}\itemsep0.5em
+\item
+\textbf{Free, extensible, and fast} compared to other toolboxes.
+
+\item
+\textbf{Very easy installation} from inside Octave/Matlab command window.
+
+\item
+Microsoft Windows, macOS, and Linux support.
+\end{itemize}
+
+\bigskip
+
+What comes next?
+\begin{itemize}\itemsep0.5em
+\item
+Extend implementation:
 \begin{itemize}
 \item
-What needs to be improved?
+Cholesky factorization, SVD-, Eigenvalue-decomposition
+
+\item
+MPC interface (complex data)
+
+\item
+Sparse and N-dimensional data type and algorithms
+
+\item
+Research and test published MPFR-algorithms
+(dot-product \cite{Isupov2020}, matrix multiplication \cite{Kouya2016}, ...)
+
+\item
+Usage of other MPFR-based libraries (MPLAPACK \cite{Nakata2021}, ...)?
+\end{itemize}
+
+\item
+Use MPFR ternary return value to detect accuracy loss in algorithms.
 \end{itemize}
 \end{frame}
 
