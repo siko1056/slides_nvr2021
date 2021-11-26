@@ -18,7 +18,8 @@ APA (1.0.0), Advanpix (4.8.5.14569), GEM (2.0.2), VPA (R2021a)}
 \end{itemize}
 
 \item
-Tests with \lstinline|A = rand(N,N)| and \lstinline|b = A * ones(N,1)|:
+Tests with \lstinline|A = rand(N,N)| and \lstinline|b = A * ones(N,1)|
+mean value of 10 repetitions:
 
 \begin{itemize}
 \item
@@ -58,7 +59,7 @@ see "bits2digits" in \url{http://www.holoborodko.com/pavel/mpfr/}.} \\
 \end{frame}
 
 
-\begin{frame}{Benchmark (2/4)}
+\begin{frame}{Benchmark (2/4) Matrix-Matrix-Multiplication}
 
 \begin{columns}
 \begin{column}{0.3\textwidth}
@@ -81,10 +82,28 @@ see "bits2digits" in \url{http://www.holoborodko.com/pavel/mpfr/}.} \\
 \end{column}
 \end{columns}
 
+\bigskip
+
+\begin{itemize}
+\item
+VPA is slow for dimensions $> 300$.
+
+\item
+APA is comparable to Advanpix in double precision,
+partially by factor $\backsim 2$ slower in higher precisions,
+but \textbf{slightly faster than Advanpix} in dimensions $500 - 900$.
+
+\item
+GEM shows a zig-zagging performance with a factor $\backsim 4-5$ slower than APA.
+
+\item
+APA multiplies two matrices of dimension $N = 2000$ in 34 seconds in octuple precision.
+\end{itemize}
+
 \end{frame}
 
 
-\begin{frame}{Benchmark (3/4)}
+\begin{frame}{Benchmark (3/4) LU-factorization}
 
 \begin{columns}
 \begin{column}{0.3\textwidth}
@@ -107,10 +126,23 @@ see "bits2digits" in \url{http://www.holoborodko.com/pavel/mpfr/}.} \\
 \end{column}
 \end{columns}
 
+\bigskip
+
+\begin{itemize}
+\item
+VPA is slow for dimensions $> 300$.
+
+\item
+APA is by factor $\backsim 3$ (quadruple $\backsim 4$) slower than Advanpix.
+
+\item
+APA factorizes a matrix of dimension $N = 2000$ in 27 seconds in octuple precision.
+\end{itemize}
+
 \end{frame}
 
 
-\begin{frame}{Benchmark (4/4)}
+\begin{frame}{Benchmark (4/4) Solve $Ax = b$}
 
 \begin{columns}
 \begin{column}{0.3\textwidth}
@@ -132,5 +164,18 @@ see "bits2digits" in \url{http://www.holoborodko.com/pavel/mpfr/}.} \\
 \end{figure}
 \end{column}
 \end{columns}
+
+\bigskip
+
+\begin{itemize}
+\item
+GEM and VPA are slow for dimensions $> 200$.
+
+\item
+APA is by factor $\backsim 2$ (quadruple $\backsim 4$) slower than Advanpix.
+
+\item
+APA solves a system of dimension $N = 2000$ in 33 seconds in octuple precision.
+\end{itemize}
 
 \end{frame}
